@@ -10,7 +10,7 @@ const MainFooter = () => {
     >
       <div className="container mx-auto text-center">
         <p>
-          &copy; {new Date().getFullYear()} Your Company Name. All rights
+          &copy; {new Date().getFullYear()} Youssef Shaaban. All rights
           reserved.
         </p>
         <p>

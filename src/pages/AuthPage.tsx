@@ -1,6 +1,11 @@
-import { RegisterForm } from "../components";
+import { useState } from "react";
+import { LoginForm, RegisterForm } from "../components";
 
 const AuthPage = () => {
+  const [isLoginForm, setIsLoginForm] = useState<boolean>(false);
+
+  const toggleForm = () => setIsLoginForm(!isLoginForm);
+
   return (
     <div
       style={{
@@ -9,7 +14,11 @@ const AuthPage = () => {
         height: "70vh",
       }}
     >
-      <RegisterForm />
+      {isLoginForm ? (
+        <LoginForm toggleForm={toggleForm} />
+      ) : (
+        <RegisterForm toggleForm={toggleForm} />
+      )}
     </div>
   );
 };

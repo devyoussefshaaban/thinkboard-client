@@ -12,17 +12,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../context";
-import { registerUser } from "../context/actions/authActions";
+import { loginUser } from "../context/actions/authActions";
 import type { FC } from "react";
+import { useNavigate } from "react-router-dom";
 
-type RegisterFormData = {
-  name: string;
+type LoginFormData = {
   email: string;
   password: string;
 };
 const inputSchema = yup
   .object({
-    name: yup.string().required("Username is required"),
     email: yup.string().email("Invalid email").required("Email is required"),
     password: yup
       .string()
@@ -35,7 +34,7 @@ interface IProps {
   toggleForm: () => void;
 }
 
-const RegisterForm: FC<IProps> = ({ toggleForm }) => {
+const LoginForm: FC<IProps> = ({ toggleForm }) => {
   const {
     register,
     handleSubmit,
@@ -44,9 +43,13 @@ const RegisterForm: FC<IProps> = ({ toggleForm }) => {
   } = useForm({ resolver: yupResolver(inputSchema) });
 
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onSubmit = (data: RegisterFormData) => {
-    dispatch(registerUser(data));
+  const onSubmit = (data: LoginFormData) => {
+    dispatch(loginUser(data));
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
     reset();
   };
 
@@ -66,26 +69,11 @@ const RegisterForm: FC<IProps> = ({ toggleForm }) => {
     >
       <Box mb={4}>
         <Typography variant="h4" textAlign="center">
-          Register Form
+          Login Form
         </Typography>
         <Divider />
       </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box mb={2}>
-          <InputLabel sx={{ fontWeight: 600 }} htmlFor="name">
-            Username
-          </InputLabel>
-          <FormControl fullWidth>
-            <TextField
-              type="name"
-              placeholder="Enter your username"
-              {...register("name", { required: true })}
-            />
-          </FormControl>
-          <Typography variant="body1" color="error">
-            {errors.name?.message}
-          </Typography>
-        </Box>
         <Box mb={2}>
           <InputLabel sx={{ fontWeight: 600 }} htmlFor="email">
             Email
@@ -124,7 +112,7 @@ const RegisterForm: FC<IProps> = ({ toggleForm }) => {
             disabled={false}
             sx={{ textTransform: "capitalize", margin: "auto" }}
           >
-            Register
+            Login
           </Button>
         </Box>
       </form>
@@ -135,17 +123,17 @@ const RegisterForm: FC<IProps> = ({ toggleForm }) => {
           color: "#555",
         }}
       >
-        Already have an account?{" "}
+        Don't have an account yet?{" "}
         <Button
           onClick={() => toggleForm()}
           color="primary"
           sx={{ textTransform: "none" }}
         >
-          Login
+          Register
         </Button>
       </p>
     </Box>
   );
 };
 
-export default RegisterForm;
+export default LoginForm;

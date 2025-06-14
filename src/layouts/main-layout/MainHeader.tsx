@@ -16,7 +16,7 @@ const MainHeader = () => {
         }}
       >
         <Link to="/" className="logo">
-          <img src="/logo.jpg" alt="Logo" style={{ width: 80 }} />
+          <img src="/logo.png" alt="Logo" style={{ width: 85 }} />
         </Link>
         {isAuthenticated ? (
           <Link to="/" className="nav-link">
