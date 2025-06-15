@@ -6,3 +6,6 @@ export const AUTH_RESET_PASSWORD = "AUTH_RESET_PASSWORD";
 export const AUTH_VERIFY_EMAIL = "AUTH_VERIFY_EMAIL";
 export const GET_USER_PROFILE = "GET_USER_PROFILE";
 export const AUTH_ERROR = "AUTH_ERROR";
+
+export const GET_ALL_NOTES = "GET_ALL_NOTES";
+export const NOTES_ERROR = "NOTES_ERROR";

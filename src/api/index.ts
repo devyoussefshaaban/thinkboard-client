@@ -27,4 +27,8 @@ const authApi = {
   getUserProfile: () => axios.get(`${baseUrlV1}/auth/me`, requestHeaders),
 };
 
-export { authApi };
+const notesApi = {
+  getAllNotes: () => axios.get(`${baseUrlV1}/notes`, requestHeaders),
+};
+
+export { authApi, notesApi };

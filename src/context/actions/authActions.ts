@@ -3,6 +3,7 @@ import {
   type LoginUserRequest,
   type RegisterUserRequest,
 } from "../../api";
+import { AUTH_ERROR } from "./actionTypes";
 
 const registerUser =
   (requsetBody: RegisterUserRequest) => async (dispatch: any) => {
@@ -16,7 +17,7 @@ const registerUser =
       });
     } catch (error: any) {
       dispatch({
-        type: "AUTH_ERROR",
+        type: AUTH_ERROR,
         payload: error.response?.data?.message || "Registration failed",
       });
     }
@@ -33,7 +34,7 @@ const loginUser = (requsetBody: LoginUserRequest) => async (dispatch: any) => {
     });
   } catch (error: any) {
     dispatch({
-      type: "AUTH_ERROR",
+      type: AUTH_ERROR,
       payload: error.response?.data?.message || "Logging in failed",
     });
   }
@@ -50,7 +51,7 @@ const getUserProfile = () => async (dispatch: any) => {
     });
   } catch (error: any) {
     dispatch({
-      type: "AUTH_ERROR",
+      type: AUTH_ERROR,
       payload: error.response?.data?.message || "Fetching user profile failed",
     });
   }
