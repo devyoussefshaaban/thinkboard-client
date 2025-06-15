@@ -3,7 +3,7 @@ import type { AppDispatch, RootState } from "../context";
 import { getAllNotes } from "../context/actions/notesActions";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Button } from "@mui/material";
-import { CreateNoteForm } from "../components";
+import { CreateNoteForm, NotesContainer } from "../components";
 import SlideModal from "../utils/SlideModal";
 
 const HomePage = () => {
@@ -35,7 +35,7 @@ const HomePage = () => {
             </Button>
           </Box>
         ) : (
-          <h4>Notes List...</h4>
+          <NotesContainer />
         )}
       </div>
       <SlideModal open={openModal} handleClose={handleClose}>

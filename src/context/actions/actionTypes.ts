@@ -8,4 +8,8 @@ export const GET_USER_PROFILE = "GET_USER_PROFILE";
 export const AUTH_ERROR = "AUTH_ERROR";
 
 export const GET_ALL_NOTES = "GET_ALL_NOTES";
+export const GET_NOTE_BY_ID = "GET_NOTE_BY_ID";
+export const CREATE_NEW_NOTE = "CREATE_NEW_NOTE";
+export const UPDATE_NOTE = "UPDATE_NOTE";
+export const DELETE_NOTE = "DELETE_NOTE";
 export const NOTES_ERROR = "NOTES_ERROR";

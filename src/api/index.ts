@@ -13,6 +13,11 @@ export type LoginUserRequest = {
   password: string;
 };
 
+export type CreateNoteRequest = {
+  title: string;
+  content: string;
+};
+
 const requestHeaders = {
   headers: {
     Authorization: `Bearer ${Cookies.get("token") || ""}`,
@@ -29,6 +34,8 @@ const authApi = {
 
 const notesApi = {
   getAllNotes: () => axios.get(`${baseUrlV1}/notes`, requestHeaders),
+  createNewNote: (requestBody: CreateNoteRequest) =>
+    axios.post(`${baseUrlV1}/notes`, requestBody, requestHeaders),
 };
 
 export { authApi, notesApi };

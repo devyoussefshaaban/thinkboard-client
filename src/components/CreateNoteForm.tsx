@@ -2,6 +2,9 @@ import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import type { AppDispatch } from "../context";
+import { useDispatch } from "react-redux";
+import { createNewNote } from "../context/actions/notesActions";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
@@ -18,11 +21,15 @@ const CreateNoteForm = () => {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
 
+  const dispatch: AppDispatch = useDispatch();
+
   const onSubmit = (data: any) => {
-    console.log("Form Data Submitted:", data);
+    dispatch(createNewNote(data));
+    reset();
   };
 
   return (
