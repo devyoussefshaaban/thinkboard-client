@@ -39,6 +39,11 @@ const notesReducer = (state = initialState, action: any) => {
         ...state,
         notes: state.notes.filter((note) => note._id !== action.payload),
       };
+    case UPDATE_NOTE:
+      toast.success("Note updated successfully.");
+      return {
+        ...state,
+      };
     case NOTES_ERROR:
       toast.error(action.payload);
       return {

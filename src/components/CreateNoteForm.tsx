@@ -1,10 +1,21 @@
-import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputLabel,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { AppDispatch } from "../context";
 import { useDispatch } from "react-redux";
-import { createNewNote } from "../context/actions/notesActions";
+import { createNewNote, editNote } from "../context/actions/notesActions";
+import CloseIcon from "@mui/icons-material/Close";
+import type { FC } from "react";
+import type { Note } from "../models/Note";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
@@ -17,7 +28,16 @@ const validationSchema = Yup.object().shape({
     .max(300, "Content cannot exceed 500 characters"),
 });
 
-const CreateNoteForm = () => {
+interface IProps {
+  formType: "CREATE" | "EDIT";
+  handleCloseCreateModal?: () => void;
+  activeNote?: Note;
+}
+const CreateNoteForm: FC<IProps> = ({
+  formType,
+  handleCloseCreateModal,
+  activeNote,
+}) => {
   const {
     handleSubmit,
     register,
@@ -27,26 +47,44 @@ const CreateNoteForm = () => {
 
   const dispatch: AppDispatch = useDispatch();
 
+  const isCreateForm = formType === "CREATE";
   const onSubmit = (data: any) => {
-    dispatch(createNewNote(data));
+    isCreateForm
+      ? dispatch(createNewNote(data))
+      : dispatch(editNote(activeNote?._id as string, data));
     reset();
+    handleCloseCreateModal && handleCloseCreateModal();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box mb={4}>
-        <Typography variant="h5" gutterBottom textAlign="center">
-          Create Note
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Fill in the details below to create a new note.
-        </Typography>
-      </Box>
+      <Stack mb={4}>
+        <Box>
+          <Typography variant="h5" gutterBottom textAlign="center">
+            {isCreateForm ? "Create" : "Update"} Note
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Fill in the details below to create a new note.
+          </Typography>
+        </Box>
+        <IconButton
+          sx={{
+            width: "fit-content",
+            position: "absolute",
+            top: 10,
+            right: 10,
+          }}
+          onClick={handleCloseCreateModal}
+        >
+          <CloseIcon />
+        </IconButton>
+      </Stack>
       <Box mb={2}>
         <InputLabel htmlFor="title">Title</InputLabel>
         <TextField
           {...register("title")}
           placeholder="Enter note title"
+          defaultValue={activeNote?.title}
           sx={{ width: "100%" }}
           type="text"
           id="title"
@@ -63,6 +101,7 @@ const CreateNoteForm = () => {
         <TextField
           {...register("content")}
           placeholder="Enter note content"
+          defaultValue={activeNote?.content}
           sx={{ width: "100%" }}
           type="text"
           id="content"
@@ -80,7 +119,7 @@ const CreateNoteForm = () => {
         color="primary"
         sx={{ textTransform: "capitalize", margin: "auto", display: "block" }}
       >
-        Create Note
+        {isCreateForm ? "Create" : "Save"} Note
       </Button>
     </form>
   );

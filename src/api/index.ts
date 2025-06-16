@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import type { Note } from "../models/Note";
 const baseUrl = "http://localhost:8000/api";
 const baseUrlV1 = `${baseUrl}/v1`;
 
@@ -16,6 +17,10 @@ export type LoginUserRequest = {
 export type CreateNoteRequest = {
   title: string;
   content: string;
+};
+export type UpdateNoteRequest = {
+  title?: string;
+  content?: string;
 };
 
 const requestHeaders = {
@@ -36,6 +41,10 @@ const notesApi = {
   getAllNotes: () => axios.get(`${baseUrlV1}/notes`, requestHeaders),
   createNewNote: (requestBody: CreateNoteRequest) =>
     axios.post(`${baseUrlV1}/notes`, requestBody, requestHeaders),
+  deleteNote: (noteId: Note["_id"]) =>
+    axios.delete(`${baseUrlV1}/notes/${noteId}`, requestHeaders),
+  editNote: (noteId: Note["_id"], requestBody: UpdateNoteRequest) =>
+    axios.patch(`${baseUrlV1}/notes/${noteId}`, requestBody, requestHeaders),
 };
 
 export { authApi, notesApi };

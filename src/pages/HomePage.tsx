@@ -39,7 +39,7 @@ const HomePage = () => {
         )}
       </div>
       <SlideModal open={openModal} handleClose={handleClose}>
-        <CreateNoteForm />
+        <CreateNoteForm formType="CREATE" />
       </SlideModal>
     </>
   );

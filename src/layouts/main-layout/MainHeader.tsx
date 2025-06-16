@@ -20,7 +20,7 @@ const MainHeader = () => {
         </Link>
         {isAuthenticated ? (
           <Link to="/" className="nav-link">
-            <Avatar src="https://avatar.iran.liara.run/public/boy" />
+            <Avatar src="" />
           </Link>
         ) : (
           <Button>Login</Button>
