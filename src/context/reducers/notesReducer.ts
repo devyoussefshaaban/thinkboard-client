@@ -5,13 +5,16 @@ import {
   DELETE_NOTE,
   GET_ALL_NOTES,
   NOTES_ERROR,
+  SET_ACTIVE_NOTE,
   UPDATE_NOTE,
 } from "../actions/actionTypes";
 
 const initialState: {
   notes: Note[];
+  activeNote: Note | null;
 } = {
   notes: [],
+  activeNote: null,
 };
 
 const notesReducer = (state = initialState, action: any) => {
@@ -27,22 +30,20 @@ const notesReducer = (state = initialState, action: any) => {
         ...state,
         notes: [...state.notes, action.payload],
       };
-    case UPDATE_NOTE:
-      return {
-        ...state,
-        notes: state.notes.map((note) =>
-          note._id === action.payload._id ? action.payload : note
-        ),
-      };
     case DELETE_NOTE:
+      toast.success("Note deleted successfully.");
       return {
         ...state,
-        notes: state.notes.filter((note) => note._id !== action.payload),
       };
     case UPDATE_NOTE:
       toast.success("Note updated successfully.");
       return {
         ...state,
+      };
+    case SET_ACTIVE_NOTE:
+      return {
+        ...state,
+        activeNote: action.payload,
       };
     case NOTES_ERROR:
       toast.error(action.payload);

@@ -10,12 +10,15 @@ import {
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import type { AppDispatch } from "../context";
-import { useDispatch } from "react-redux";
-import { createNewNote, editNote } from "../context/actions/notesActions";
+import type { AppDispatch, RootState } from "../context";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createNewNote,
+  editNote,
+  setActiveNote,
+} from "../context/actions/notesActions";
 import CloseIcon from "@mui/icons-material/Close";
 import type { FC } from "react";
-import type { Note } from "../models/Note";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string()
@@ -30,14 +33,9 @@ const validationSchema = Yup.object().shape({
 
 interface IProps {
   formType: "CREATE" | "EDIT";
-  handleCloseCreateModal?: () => void;
-  activeNote?: Note;
+  handleCloseCreateModal: () => void;
 }
-const CreateNoteForm: FC<IProps> = ({
-  formType,
-  handleCloseCreateModal,
-  activeNote,
-}) => {
+const CreateNoteForm: FC<IProps> = ({ formType, handleCloseCreateModal }) => {
   const {
     handleSubmit,
     register,
@@ -45,13 +43,21 @@ const CreateNoteForm: FC<IProps> = ({
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
 
+  console.log({ formType, handleCloseCreateModal });
+
+  const { activeNote } = useSelector((state: RootState) => state.notes);
+
   const dispatch: AppDispatch = useDispatch();
 
   const isCreateForm = formType === "CREATE";
+
   const onSubmit = (data: any) => {
-    isCreateForm
-      ? dispatch(createNewNote(data))
-      : dispatch(editNote(activeNote?._id as string, data));
+    if (isCreateForm) {
+      dispatch(createNewNote(data));
+    } else {
+      dispatch(editNote(activeNote?._id as string, data));
+      dispatch(setActiveNote(null));
+    }
     reset();
     handleCloseCreateModal && handleCloseCreateModal();
   };

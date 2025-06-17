@@ -5,37 +5,29 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SlideModal from "../utils/SlideModal";
 import CreateNoteForm from "./CreateNoteForm";
+import type { AppDispatch } from "../context";
+import { useDispatch } from "react-redux";
+import { setActiveNote } from "../context/actions/notesActions";
 
 interface IProps {
   note: Note;
   handleOpenDeleteModal?: () => void;
-  setActiveNoteId?: (id: Note["_id"]) => void;
-  setActiveNote?: (id: Note) => void;
-  activeNote?: Note;
 }
 
-const NoteCard: FC<IProps> = ({
-  note,
-  handleOpenDeleteModal,
-  setActiveNoteId,
-  setActiveNote,
-  activeNote,
-}) => {
-  const { _id, title, content } = note;
+const NoteCard: FC<IProps> = ({ note, handleOpenDeleteModal }) => {
+  const { title, content } = note;
+
+  const dispatch: AppDispatch = useDispatch();
 
   const onClickDeleteIcon = () => {
-    if (setActiveNoteId) {
-      setActiveNoteId(_id);
-    }
+    dispatch(setActiveNote(note));
     if (handleOpenDeleteModal) {
       handleOpenDeleteModal();
     }
   };
 
   const onClickEditIcon = () => {
-    if (setActiveNote) {
-      setActiveNote(note);
-    }
+    dispatch(setActiveNote(note));
     if (handleOpenCreateModal) {
       handleOpenCreateModal();
     }
@@ -70,7 +62,6 @@ const NoteCard: FC<IProps> = ({
         <CreateNoteForm
           formType="EDIT"
           handleCloseCreateModal={handleCloseCreateModal}
-          activeNote={activeNote}
         />
       </SlideModal>
     </>

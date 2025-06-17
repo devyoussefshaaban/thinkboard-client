@@ -9,6 +9,7 @@ import {
   CREATE_NEW_NOTE,
   DELETE_NOTE,
   NOTES_ERROR,
+  SET_ACTIVE_NOTE,
   UPDATE_NOTE,
 } from "./actionTypes";
 
@@ -60,6 +61,7 @@ const deleteNote = (noteId: Note["_id"]) => async (dispatch: AppDispatch) => {
     });
 
     dispatch(getAllNotes());
+    dispatch(setActiveNote(null));
   } catch (error: any) {
     dispatch({
       type: NOTES_ERROR,
@@ -81,6 +83,7 @@ const editNote =
       });
 
       dispatch(getAllNotes());
+      dispatch(setActiveNote(null));
     } catch (error: any) {
       dispatch({
         type: NOTES_ERROR,
@@ -89,4 +92,11 @@ const editNote =
     }
   };
 
-export { getAllNotes, createNewNote, deleteNote, editNote };
+const setActiveNote = (note: Note | null) => {
+  return {
+    type: SET_ACTIVE_NOTE,
+    payload: note,
+  };
+};
+
+export { getAllNotes, createNewNote, deleteNote, editNote, setActiveNote };
